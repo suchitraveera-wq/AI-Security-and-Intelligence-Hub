@@ -1,0 +1,6 @@
+{
+  "name": "AI Sec & Intelligence Platform",
+  "description": "Global AI Security, Governance & Compliance Knowledge Base aggregating public threat intelligence, advisories, research whitepapers, and regulatory updates across frontier model labs, AI security firms, AI monitoring services, enterprise deployments, standards bodies, and security news.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
