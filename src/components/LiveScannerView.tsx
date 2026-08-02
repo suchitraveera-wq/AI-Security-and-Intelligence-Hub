@@ -90,20 +90,20 @@ const vectorChunk = {
   return (
     <div className="space-y-8">
       {/* Title Bar */}
-      <div className="bg-white/[0.02] border border-white/10 p-6 space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-4">
+      <div className="bg-white border border-slate-200 p-6 space-y-4 shadow-xs">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 pb-4">
           <div>
-            <span className="text-[10px] uppercase tracking-[0.25em] text-white/40 font-mono block font-bold mb-1">
+            <span className="text-[10px] uppercase tracking-[0.25em] text-slate-500 font-mono block font-bold mb-1">
               CATEGORY 06 // VULNERABILITY SCANNER
             </span>
-            <h1 className="text-3xl font-serif italic text-white">Live AI Vulnerability & Code Scanner</h1>
-            <p className="text-xs text-white/60 mt-1 max-w-2xl">
+            <h1 className="text-2xl sm:text-3xl font-serif italic text-slate-900">Live AI Vulnerability & Code Scanner</h1>
+            <p className="text-xs text-slate-600 mt-1 max-w-2xl font-mono">
               Audit system prompts, RAG data pipelines, agent tool code, or model configurations for OWASP LLM vulnerabilities using Gemini.
             </p>
           </div>
 
           <div className="flex items-center space-x-2 text-[10px] font-mono">
-            <span className="px-3 py-1.5 border border-indigo-500/40 text-indigo-400 font-bold uppercase tracking-widest">
+            <span className="px-3 py-1.5 border border-indigo-200 bg-indigo-50 text-indigo-700 font-bold uppercase tracking-widest">
               GEMINI SCAN ENGINE
             </span>
           </div>
@@ -112,7 +112,7 @@ const vectorChunk = {
 
       {/* Preset Payload Loaders */}
       <div className="space-y-3">
-        <span className="text-[10px] font-mono uppercase tracking-widest text-white/40 block font-bold">
+        <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500 block font-bold">
           Quick Preset Test Payloads:
         </span>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -120,12 +120,12 @@ const vectorChunk = {
             <button
               key={idx}
               onClick={() => handleSelectPreset(preset)}
-              className="p-4 bg-white/[0.02] hover:bg-white/[0.05] border border-white/10 text-left transition space-y-1.5 group"
+              className="p-4 bg-white hover:bg-slate-50 border border-slate-200 text-left transition space-y-1.5 group shadow-xs"
             >
-              <span className="text-[10px] font-mono uppercase tracking-widest font-bold text-indigo-400 block">
+              <span className="text-[10px] font-mono uppercase tracking-widest font-bold text-indigo-700 block">
                 {preset.targetType}
               </span>
-              <p className="text-xs font-serif italic text-white group-hover:underline line-clamp-1">
+              <p className="text-xs font-serif italic text-slate-900 group-hover:underline line-clamp-1">
                 {preset.label}
               </p>
             </button>
@@ -134,19 +134,19 @@ const vectorChunk = {
       </div>
 
       {/* Interactive Editor & Controls */}
-      <div className="bg-white/[0.02] border border-white/10 p-6 space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
+      <div className="bg-white border border-slate-200 p-6 space-y-4 shadow-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-3">
           <div className="flex items-center space-x-2">
-            <Code2 className="w-4 h-4 text-indigo-400" />
-            <span className="text-[10px] font-mono uppercase tracking-widest text-white/60 font-bold">Target Artifact Payload:</span>
+            <Code2 className="w-4 h-4 text-indigo-600" />
+            <span className="text-[10px] font-mono uppercase tracking-widest text-slate-700 font-bold">Target Artifact Payload:</span>
           </div>
 
           <div className="flex items-center space-x-2 text-[10px] font-mono">
-            <span className="text-white/40 uppercase font-bold">TARGET TYPE:</span>
+            <span className="text-slate-500 uppercase font-bold">TARGET TYPE:</span>
             <select
               value={selectedTargetType}
               onChange={(e) => setSelectedTargetType(e.target.value as any)}
-              className="bg-black border border-white/15 text-white px-3 py-1.5 focus:outline-none text-[10px] uppercase font-mono"
+              className="bg-slate-50 border border-slate-300 text-slate-900 px-3 py-1.5 focus:outline-none text-[10px] uppercase font-mono"
             >
               <option value="System Prompt">SYSTEM PROMPT</option>
               <option value="Agent Tool Code">AGENT TOOL CODE</option>
@@ -160,23 +160,23 @@ const vectorChunk = {
           value={payloadText}
           onChange={(e) => setPayloadText(e.target.value)}
           rows={6}
-          className="w-full bg-black border border-white/15 p-4 text-[11px] text-white font-mono focus:outline-none focus:border-white transition leading-relaxed"
+          className="w-full bg-slate-50 border border-slate-300 p-4 text-[11px] text-slate-900 font-mono focus:outline-none focus:border-slate-800 transition leading-relaxed"
           placeholder="Paste system prompt, agent code, or RAG data chunk here..."
         />
 
         <div className="flex items-center justify-between pt-1">
-          <span className="text-[10px] text-white/40 font-mono">
+          <span className="text-[10px] text-slate-500 font-mono font-bold">
             {payloadText.length} CHARACTERS
           </span>
 
           <button
             onClick={handleExecuteScan}
             disabled={isScanning || !payloadText.trim()}
-            className="flex items-center space-x-2 px-5 py-2.5 bg-white text-black hover:bg-white/80 transition text-[10px] font-mono uppercase tracking-[0.2em] font-bold disabled:opacity-50"
+            className="flex items-center space-x-2 px-5 py-2.5 bg-slate-900 text-white hover:bg-slate-800 transition text-[10px] font-mono uppercase tracking-[0.2em] font-bold disabled:opacity-50 shadow-xs"
           >
             {isScanning ? (
               <>
-                <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                <RefreshCw className="w-3.5 h-3.5 animate-spin text-amber-300" />
                 <span>Executing Security Audit...</span>
               </>
             ) : (
@@ -191,23 +191,23 @@ const vectorChunk = {
 
       {/* Scan Results Display */}
       {scanResult && (
-        <div className="bg-white/[0.02] border border-white/10 p-6 space-y-6">
+        <div className="bg-white border border-slate-200 p-6 space-y-6 shadow-xs">
           {/* Risk Score Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
             <div>
-              <span className="text-[10px] font-mono text-white/40 uppercase tracking-widest">SCAN ID: {scanResult.scanId}</span>
-              <h2 className="text-2xl font-serif italic text-white mt-0.5">
+              <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest font-bold">SCAN ID: {scanResult.scanId}</span>
+              <h2 className="text-xl font-serif italic text-slate-900 mt-0.5">
                 Target Artifact Risk Assessment
               </h2>
             </div>
 
             <div className="flex items-center space-x-3">
               <div className="text-right font-mono">
-                <span className="text-[10px] text-white/40 uppercase block font-bold">Overall Risk Score</span>
-                <span className={`text-3xl font-serif ${
-                  scanResult.overallRiskScore >= 70 ? 'text-red-500' :
-                  scanResult.overallRiskScore >= 40 ? 'text-amber-400' :
-                  'text-emerald-400'
+                <span className="text-[10px] text-slate-500 uppercase block font-bold">Overall Risk Score</span>
+                <span className={`text-3xl font-serif font-bold ${
+                  scanResult.overallRiskScore >= 70 ? 'text-red-700' :
+                  scanResult.overallRiskScore >= 40 ? 'text-amber-700' :
+                  'text-emerald-700'
                 }`}>
                   {scanResult.overallRiskScore} / 100
                 </span>
@@ -216,60 +216,60 @@ const vectorChunk = {
           </div>
 
           {/* AI Executive Analysis Summary */}
-          <div className="p-4 border border-white/10 bg-black/60 space-y-2 text-xs font-mono">
-            <div className="flex items-center space-x-2 text-indigo-400 font-bold uppercase text-[10px] tracking-widest">
-              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+          <div className="p-4 border border-slate-200 bg-slate-50 space-y-2 text-xs font-mono">
+            <div className="flex items-center space-x-2 text-indigo-700 font-bold uppercase text-[10px] tracking-widest">
+              <Sparkles className="w-3.5 h-3.5 text-amber-600" />
               <span>Gemini Executive Security Assessment</span>
             </div>
-            <p className="text-white/80 leading-relaxed text-[11px]">
+            <p className="text-slate-800 leading-relaxed text-[11px]">
               {scanResult.aiAnalysis}
             </p>
           </div>
 
           {/* Vulnerabilities Detected */}
           <div className="space-y-4">
-            <h3 className="text-xl font-serif italic text-white flex items-center gap-2">
-              <ShieldAlert className="w-4 h-4 text-red-500" />
+            <h3 className="text-lg font-serif italic text-slate-900 flex items-center gap-2">
+              <ShieldAlert className="w-4 h-4 text-red-600" />
               Identified Security Vulnerabilities ({scanResult.vulnerabilitiesFound.length})
             </h3>
 
             <div className="space-y-4">
               {scanResult.vulnerabilitiesFound.map((vuln, idx) => (
-                <div key={idx} className="p-5 border-l-2 border-red-500 border-t border-r border-b border-white/10 bg-black/40 space-y-3 text-xs">
+                <div key={idx} className="p-5 border-l-2 border-red-500 border-t border-r border-b border-slate-200 bg-slate-50 space-y-3 text-xs">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3 font-mono">
                       <span className={`px-2 py-0.5 text-[9px] font-bold uppercase ${
-                        vuln.severity === 'Critical' ? 'text-red-400 border border-red-500/40' :
-                        vuln.severity === 'High' ? 'text-amber-400 border border-amber-500/40' :
-                        'text-white/60 border border-white/20'
+                        vuln.severity === 'Critical' ? 'text-red-700 border border-red-300 bg-red-50' :
+                        vuln.severity === 'High' ? 'text-amber-700 border border-amber-300 bg-amber-50' :
+                        'text-slate-700 border border-slate-300 bg-slate-100'
                       }`}>
                         {vuln.severity}
                       </span>
-                      <h4 className="font-serif italic text-base text-white">{vuln.title}</h4>
+                      <h4 className="font-serif italic text-base text-slate-900">{vuln.title}</h4>
                     </div>
-                    <span className="text-[10px] text-white/40 font-mono uppercase">{vuln.type}</span>
+                    <span className="text-[10px] text-slate-500 font-mono font-bold uppercase">{vuln.type}</span>
                   </div>
 
-                  <p className="text-white/70 leading-relaxed">{vuln.description}</p>
+                  <p className="text-slate-700 leading-relaxed">{vuln.description}</p>
                   
-                  <div className="p-3 border border-white/10 bg-white/[0.02] text-white/60 font-mono space-y-1">
-                    <strong className="text-red-400 block text-[10px] uppercase tracking-widest">Impact Scenario:</strong>
-                    <p className="text-white/80 text-[11px] leading-relaxed">{vuln.impact}</p>
+                  <div className="p-3 border border-slate-200 bg-white text-slate-700 font-mono space-y-1">
+                    <strong className="text-red-700 block text-[10px] uppercase tracking-widest font-bold">Impact Scenario:</strong>
+                    <p className="text-slate-800 text-[11px] leading-relaxed">{vuln.impact}</p>
                   </div>
 
                   {vuln.remediationCode && (
                     <div className="space-y-1.5 font-mono">
-                      <div className="flex items-center justify-between text-[10px] uppercase tracking-widest text-emerald-400 font-bold">
+                      <div className="flex items-center justify-between text-[10px] uppercase tracking-widest text-emerald-800 font-bold">
                         <span>Recommended Remediation Code:</span>
                         <button
                           onClick={() => handleCopyCode(vuln.remediationCode!, idx)}
-                          className="flex items-center space-x-1 text-white/50 hover:text-white"
+                          className="flex items-center space-x-1 text-slate-500 hover:text-slate-900"
                         >
-                          {copiedCodeIndex === idx ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                          {copiedCodeIndex === idx ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
                           <span>{copiedCodeIndex === idx ? 'Copied' : 'Copy Fix'}</span>
                         </button>
                       </div>
-                      <pre className="p-3 border border-emerald-500/30 bg-emerald-950/20 text-emerald-300 font-mono text-[11px] overflow-x-auto whitespace-pre-wrap leading-relaxed">
+                      <pre className="p-3 border border-emerald-300 bg-emerald-50 text-emerald-950 font-mono text-[11px] overflow-x-auto whitespace-pre-wrap leading-relaxed font-medium">
                         {vuln.remediationCode}
                       </pre>
                     </div>
@@ -281,14 +281,14 @@ const vectorChunk = {
 
           {/* Compliance Gaps Identified */}
           {scanResult.complianceGaps && scanResult.complianceGaps.length > 0 && (
-            <div className="space-y-3 pt-4 border-t border-white/10">
-              <h3 className="text-xl font-serif italic text-white">Associated Compliance Gaps</h3>
+            <div className="space-y-3 pt-4 border-t border-slate-200">
+              <h3 className="text-lg font-serif italic text-slate-900">Associated Compliance Gaps</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
                 {scanResult.complianceGaps.map((gap, idx) => (
-                  <div key={idx} className="p-4 border border-white/10 bg-black/60 space-y-1">
-                    <span className="font-bold text-amber-400 uppercase tracking-widest text-[10px] block">{gap.framework}</span>
-                    <span className="text-white/40 text-[10px] block">{gap.clause}</span>
-                    <p className="text-white/80 text-[11px] mt-1">{gap.issue}</p>
+                  <div key={idx} className="p-4 border border-slate-200 bg-slate-50 space-y-1">
+                    <span className="font-bold text-amber-800 uppercase tracking-widest text-[10px] block">{gap.framework}</span>
+                    <span className="text-slate-500 text-[10px] block font-semibold">{gap.clause}</span>
+                    <p className="text-slate-800 text-[11px] mt-1">{gap.issue}</p>
                   </div>
                 ))}
               </div>

@@ -45,43 +45,43 @@ export const IntelligenceDigestModal: React.FC<IntelligenceDigestModalProps> = (
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
-      <div className="bg-[#0A0A0B] border border-white/10 max-w-3xl w-full p-8 shadow-2xl relative space-y-6 my-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md overflow-y-auto">
+      <div className="bg-white border border-slate-200 max-w-3xl w-full p-8 shadow-xl relative space-y-6 my-8">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute right-6 top-6 p-2 text-white/40 hover:text-white transition"
+          className="absolute right-6 top-6 p-2 text-slate-400 hover:text-slate-900 transition"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Modal Header */}
         <div className="space-y-2">
-          <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-white/40 block font-bold">
+          <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-slate-500 block font-bold">
             REAL-TIME INTEL BRIEFING // GOOGLE SEARCH GROUNDED
           </span>
-          <h2 className="text-2xl font-serif italic text-white flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-pink-400" />
+          <h2 className="text-xl sm:text-2xl font-serif italic text-slate-900 flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-pink-600" />
             Live AI Threat Intelligence Briefing
           </h2>
-          <p className="text-xs text-white/60">
+          <p className="text-xs text-slate-600 font-mono">
             Synthesize real-time industry alerts, CVE reports, regulatory enforcement notices, and privacy disclosures using Gemini.
           </p>
         </div>
 
         {/* Query Input */}
-        <div className="space-y-2 bg-black p-4 border border-white/10">
-          <label className="text-[10px] font-mono uppercase tracking-widest text-white/40 block font-bold">
+        <div className="space-y-2 bg-slate-50 p-4 border border-slate-200">
+          <label className="text-[10px] font-mono uppercase tracking-widest text-slate-500 block font-bold">
             Threat Intelligence Search Topic:
           </label>
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input
                 type="text"
                 value={topicQuery}
                 onChange={(e) => setTopicQuery(e.target.value)}
-                className="w-full bg-[#0A0A0B] border border-white/15 pl-9 pr-4 py-2 text-xs text-white font-mono focus:outline-none focus:border-white transition"
+                className="w-full bg-white border border-slate-300 pl-9 pr-4 py-2 text-xs text-slate-900 font-mono focus:outline-none focus:border-slate-800 transition"
                 placeholder="e.g. Prompt injection in agentic frameworks 2026..."
               />
             </div>
@@ -89,16 +89,16 @@ export const IntelligenceDigestModal: React.FC<IntelligenceDigestModalProps> = (
             <button
               onClick={handleFetchDigest}
               disabled={isLoading}
-              className="flex items-center justify-center space-x-2 px-5 py-2 bg-white text-black hover:bg-white/80 text-[10px] font-mono uppercase tracking-[0.2em] font-bold transition disabled:opacity-50 whitespace-nowrap"
+              className="flex items-center justify-center space-x-2 px-5 py-2 bg-slate-900 text-white hover:bg-slate-800 text-[10px] font-mono uppercase tracking-[0.2em] font-bold transition disabled:opacity-50 whitespace-nowrap shadow-xs"
             >
               {isLoading ? (
                 <>
-                  <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                  <RefreshCw className="w-3.5 h-3.5 animate-spin text-amber-300" />
                   <span>Synthesizing...</span>
                 </>
               ) : (
                 <>
-                  <Zap className="w-3.5 h-3.5" />
+                  <Zap className="w-3.5 h-3.5 text-amber-300" />
                   <span>Generate Briefing</span>
                 </>
               )}
@@ -109,17 +109,17 @@ export const IntelligenceDigestModal: React.FC<IntelligenceDigestModalProps> = (
         {/* Digest Output */}
         {digestData ? (
           <div className="space-y-4 max-h-[420px] overflow-y-auto pr-2">
-            <div className="p-5 border border-white/10 bg-black/60 text-xs text-white/80 leading-relaxed font-mono">
-              <div className="prose prose-invert max-w-none text-xs text-white/80 whitespace-pre-line leading-relaxed">
+            <div className="p-5 border border-slate-200 bg-slate-50 text-xs text-slate-800 leading-relaxed font-mono">
+              <div className="prose max-w-none text-xs text-slate-800 whitespace-pre-line leading-relaxed">
                 {digestData.summary}
               </div>
             </div>
 
             {/* Grounded Citation Sources */}
             {digestData.groundingSources && digestData.groundingSources.length > 0 && (
-              <div className="space-y-2 pt-3 border-t border-white/10 font-mono">
-                <span className="text-[10px] uppercase tracking-widest text-white/40 flex items-center gap-1.5 font-bold">
-                  <Globe className="w-3.5 h-3.5 text-pink-400" />
+              <div className="space-y-2 pt-3 border-t border-slate-200 font-mono">
+                <span className="text-[10px] uppercase tracking-widest text-slate-500 flex items-center gap-1.5 font-bold">
+                  <Globe className="w-3.5 h-3.5 text-pink-600" />
                   Grounded News & Security References:
                 </span>
                 <div className="flex flex-wrap gap-2">
@@ -129,10 +129,10 @@ export const IntelligenceDigestModal: React.FC<IntelligenceDigestModalProps> = (
                       href={source.uri}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-2.5 py-1 border border-white/15 hover:border-white text-white/70 hover:text-white text-[10px] flex items-center gap-1 transition"
+                      className="px-2.5 py-1 border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 hover:text-slate-900 text-[10px] flex items-center gap-1 transition"
                     >
                       <span>{source.title || source.uri}</span>
-                      <ExternalLink className="w-3 h-3 text-pink-400" />
+                      <ExternalLink className="w-3 h-3 text-pink-600" />
                     </a>
                   ))}
                 </div>
@@ -140,19 +140,19 @@ export const IntelligenceDigestModal: React.FC<IntelligenceDigestModalProps> = (
             )}
           </div>
         ) : (
-          <div className="p-8 text-center bg-black/40 border border-white/10 space-y-2 font-mono">
-            <Sparkles className="w-6 h-6 text-pink-400 mx-auto animate-pulse" />
-            <p className="text-xs text-white/50">
+          <div className="p-8 text-center bg-slate-50 border border-slate-200 space-y-2 font-mono">
+            <Sparkles className="w-6 h-6 text-pink-600 mx-auto animate-pulse" />
+            <p className="text-xs text-slate-500">
               Click "Generate Briefing" to run Gemini search grounding across global security sources and regulatory filings.
             </p>
           </div>
         )}
 
         {/* Modal Footer */}
-        <div className="flex items-center justify-end pt-2 border-t border-white/10">
+        <div className="flex items-center justify-end pt-2 border-t border-slate-200">
           <button
             onClick={onClose}
-            className="px-4 py-2 border border-white/15 hover:border-white text-white text-[10px] font-mono uppercase tracking-widest font-bold transition"
+            className="px-4 py-2 border border-slate-300 hover:border-slate-800 text-slate-700 hover:text-slate-900 text-[10px] font-mono uppercase tracking-widest font-bold transition"
           >
             Close Briefing
           </button>

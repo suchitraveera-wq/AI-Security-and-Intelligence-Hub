@@ -99,17 +99,17 @@ export const ThreatMonitoringView: React.FC<ThreatMonitoringViewProps> = ({ init
   return (
     <div className="space-y-8">
       {/* Title & Real-Time Stream Status Bar */}
-      <div className="bg-white/[0.02] border border-white/10 p-6 sm:p-8 space-y-6">
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-white/10 pb-6">
+      <div className="bg-white border border-slate-200 p-6 sm:p-8 space-y-6 shadow-xs">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-slate-200 pb-6">
           <div className="space-y-3">
-            <div className="flex items-center space-x-2 text-[10px] font-mono uppercase tracking-[0.25em] text-pink-400 font-bold">
+            <div className="flex items-center space-x-2 text-[10px] font-mono uppercase tracking-[0.25em] text-pink-600 font-bold">
               <Globe className="w-3.5 h-3.5 animate-pulse" />
               <span>PUBLIC KNOWLEDGE BASE // CATEGORY 04: AI THREAT OBSERVATORY</span>
             </div>
-            <h1 className="text-3xl sm:text-5xl font-serif italic text-white leading-tight tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-serif italic text-slate-900 leading-tight tracking-tight">
               Public AI Threat Observatory & Honeypot Telemetry Feed
             </h1>
-            <p className="text-xs sm:text-sm text-white/70 max-w-3xl leading-relaxed font-mono">
+            <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed font-mono">
               Real-time attack telemetry and honeypot payload streams aggregated from public AI monitoring platforms (Arize AI, LangSmith, Weights & Biases) and security researchers capturing prompt injections, jailbreaks, and agent hijacking in public environments.
             </p>
           </div>
@@ -117,27 +117,27 @@ export const ThreatMonitoringView: React.FC<ThreatMonitoringViewProps> = ({ init
           <div className="flex items-center space-x-3 text-[10px] font-mono">
             <button
               onClick={() => setIsLive(!isLive)}
-              className={`flex items-center space-x-2 px-4 py-2 border uppercase tracking-widest font-bold transition ${
+              className={`flex items-center space-x-2 px-4 py-2 border uppercase tracking-widest font-bold transition shadow-xs ${
                 isLive
-                  ? 'border-emerald-500/40 text-emerald-400 bg-emerald-500/10'
-                  : 'border-amber-500/40 text-amber-400 bg-amber-500/10'
+                  ? 'border-emerald-300 text-emerald-800 bg-emerald-50'
+                  : 'border-amber-300 text-amber-800 bg-amber-50'
               }`}
             >
               {isLive ? (
                 <>
-                  <Pause className="w-3.5 h-3.5 text-emerald-400" />
+                  <Pause className="w-3.5 h-3.5 text-emerald-600" />
                   <span>Public Stream Active</span>
                 </>
               ) : (
                 <>
-                  <Play className="w-3.5 h-3.5 text-amber-400" />
+                  <Play className="w-3.5 h-3.5 text-amber-600" />
                   <span>Stream Paused</span>
                 </>
               )}
             </button>
 
-            <span className="border border-white/15 px-3 py-2 text-white/70 tracking-wider flex items-center gap-1.5">
-              <Radio className="w-3 h-3 text-pink-400 animate-pulse" />
+            <span className="border border-slate-200 bg-slate-50 px-3 py-2 text-slate-700 tracking-wider flex items-center gap-1.5 font-bold">
+              <Radio className="w-3 h-3 text-pink-600 animate-pulse" />
               0.24ms LATENCY
             </span>
           </div>
@@ -145,7 +145,7 @@ export const ThreatMonitoringView: React.FC<ThreatMonitoringViewProps> = ({ init
 
         {/* Public Observatory Node Partner Selector */}
         <div className="space-y-2 font-mono text-xs">
-          <span className="text-[10px] uppercase tracking-[0.2em] text-white/40 block font-bold">
+          <span className="text-[10px] uppercase tracking-[0.2em] text-slate-500 block font-bold">
             FILTER BY PUBLIC OBSERVATORY / HONEYPOT PARTNER NODE:
           </span>
           <div className="flex flex-wrap gap-2">
@@ -153,8 +153,8 @@ export const ThreatMonitoringView: React.FC<ThreatMonitoringViewProps> = ({ init
               onClick={() => setSelectedObservatory('all')}
               className={`px-3 py-1.5 border text-[10px] font-mono uppercase tracking-wider transition ${
                 selectedObservatory === 'all'
-                  ? 'bg-white text-black border-white font-bold'
-                  : 'bg-white/[0.02] border-white/15 text-white/70 hover:bg-white/10 hover:text-white'
+                  ? 'bg-slate-900 text-white border-slate-900 font-bold shadow-xs'
+                  : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-slate-900'
               }`}
             >
               All Observatory Nodes
@@ -165,8 +165,8 @@ export const ThreatMonitoringView: React.FC<ThreatMonitoringViewProps> = ({ init
                 onClick={() => setSelectedObservatory(obs)}
                 className={`px-3 py-1.5 border text-[10px] font-mono uppercase tracking-wider transition ${
                   selectedObservatory === obs
-                    ? 'bg-white text-black border-white font-bold'
-                    : 'bg-white/[0.02] border-white/15 text-white/70 hover:bg-white/10 hover:text-white'
+                    ? 'bg-slate-900 text-white border-slate-900 font-bold shadow-xs'
+                    : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-slate-900'
                 }`}
               >
                 {obs}
@@ -177,15 +177,15 @@ export const ThreatMonitoringView: React.FC<ThreatMonitoringViewProps> = ({ init
       </div>
 
       {/* Filter Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-white/[0.02] p-4 border border-white/10 text-[10px] font-mono">
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-white p-4 border border-slate-200 text-[10px] font-mono shadow-xs">
         <div className="flex flex-wrap items-center gap-3">
-          <span className="text-white/40 uppercase tracking-widest block font-bold">
+          <span className="text-slate-500 uppercase tracking-widest block font-bold">
             THREAT CATEGORY:
           </span>
           <select
             value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
-            className="bg-black border border-white/15 text-white px-3 py-1.5 focus:outline-none font-mono text-[10px] uppercase"
+            className="bg-slate-50 border border-slate-300 text-slate-900 px-3 py-1.5 focus:outline-none font-mono text-[10px] uppercase"
           >
             <option value="all">ALL THREAT TYPES</option>
             <option value="Prompt Injection">PROMPT INJECTION</option>
@@ -196,13 +196,13 @@ export const ThreatMonitoringView: React.FC<ThreatMonitoringViewProps> = ({ init
             <option value="Unauthorized Agent Action">UNAUTHORIZED AGENT ACTION</option>
           </select>
 
-          <span className="text-white/40 uppercase tracking-widest block font-bold ml-2">
+          <span className="text-slate-500 uppercase tracking-widest block font-bold ml-2">
             SEVERITY LEVEL:
           </span>
           <select
             value={filterSeverity}
             onChange={(e) => setFilterSeverity(e.target.value)}
-            className="bg-black border border-white/15 text-white px-3 py-1.5 focus:outline-none font-mono text-[10px] uppercase"
+            className="bg-slate-50 border border-slate-300 text-slate-900 px-3 py-1.5 focus:outline-none font-mono text-[10px] uppercase"
           >
             <option value="all">ALL SEVERITIES</option>
             <option value="Critical">CRITICAL</option>
@@ -211,7 +211,7 @@ export const ThreatMonitoringView: React.FC<ThreatMonitoringViewProps> = ({ init
           </select>
         </div>
 
-        <span className="text-white/40 uppercase tracking-widest font-bold">
+        <span className="text-slate-500 uppercase tracking-widest font-bold">
           TELEMETRY PACKETS: {filteredLogs.length}
         </span>
       </div>
@@ -219,14 +219,14 @@ export const ThreatMonitoringView: React.FC<ThreatMonitoringViewProps> = ({ init
       {/* Split View: Live Log Stream + Event Inspector */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Log Stream List */}
-        <div className="lg:col-span-2 bg-white/[0.02] border border-white/10 p-5 space-y-4">
-          <div className="flex items-center justify-between border-b border-white/10 pb-3">
-            <span className="text-[10px] uppercase tracking-[0.25em] text-white/40 font-mono block font-bold">
+        <div className="lg:col-span-2 bg-white border border-slate-200 p-5 space-y-4 shadow-xs">
+          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+            <span className="text-[10px] uppercase tracking-[0.25em] text-slate-500 font-mono block font-bold">
               PUBLIC TELEMETRY FEED
             </span>
             {isLive && (
-              <span className="flex items-center gap-1.5 text-[9px] font-mono text-emerald-400 font-bold uppercase tracking-wider">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+              <span className="flex items-center gap-1.5 text-[9px] font-mono text-emerald-700 font-bold uppercase tracking-wider">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
                 HONEYPOT SENSORS ACTIVE
               </span>
             )}
@@ -243,37 +243,37 @@ export const ThreatMonitoringView: React.FC<ThreatMonitoringViewProps> = ({ init
                   onClick={() => setSelectedLog(log)}
                   className={`p-3.5 border transition cursor-pointer text-xs font-mono space-y-2 ${
                     isSelected
-                      ? 'border-purple-500 bg-white/[0.05] text-white'
-                      : 'border-white/10 bg-black/40 hover:bg-white/[0.02] text-white/70'
+                      ? 'border-purple-600 bg-purple-50 text-slate-900 font-semibold'
+                      : 'border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700'
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       <span className={`px-1.5 py-0.5 text-[9px] font-bold border uppercase tracking-wider ${
-                        isCritical ? 'text-red-400 border-red-500/40' : 'text-amber-400 border-amber-500/40'
+                        isCritical ? 'text-red-700 border-red-300 bg-red-50' : 'text-amber-700 border-amber-300 bg-amber-50'
                       }`}>
                         {log.severity}
                       </span>
-                      <span className="font-bold text-white text-[11px]">{log.threatType}</span>
-                      <span className="text-white/40 text-[10px] hidden sm:inline">({log.targetModel})</span>
+                      <span className="font-bold text-slate-900 text-[11px]">{log.threatType}</span>
+                      <span className="text-slate-500 text-[10px] hidden sm:inline">({log.targetModel})</span>
                     </div>
 
-                    <div className="flex items-center space-x-2 text-[10px] text-white/40">
+                    <div className="flex items-center space-x-2 text-[10px] text-slate-500">
                       <span>{new Date(log.timestamp).toLocaleTimeString()}</span>
-                      <span className="px-1.5 py-0.5 border border-emerald-500/30 text-emerald-400 text-[9px] font-bold uppercase">
+                      <span className="px-1.5 py-0.5 border border-emerald-300 bg-emerald-50 text-emerald-700 text-[9px] font-bold uppercase">
                         BLOCKED
                       </span>
                     </div>
                   </div>
 
                   {log.publicObservatorySource && (
-                    <div className="text-[9px] font-mono text-pink-400 flex items-center gap-1">
-                      <Server className="w-3 h-3 text-pink-500" />
+                    <div className="text-[9px] font-mono text-pink-600 font-bold flex items-center gap-1">
+                      <Server className="w-3 h-3 text-pink-600" />
                       <span>{log.publicObservatorySource}</span>
                     </div>
                   )}
 
-                  <p className="text-white/50 text-[11px] truncate">
+                  <p className="text-slate-600 text-[11px] truncate">
                     {log.promptSnippet}
                   </p>
                 </div>
@@ -283,68 +283,68 @@ export const ThreatMonitoringView: React.FC<ThreatMonitoringViewProps> = ({ init
         </div>
 
         {/* Selected Log Detailed Inspector */}
-        <div className="bg-white/[0.02] border border-white/10 p-5 space-y-4">
-          <div className="border-b border-white/10 pb-3">
-            <span className="text-[10px] uppercase tracking-[0.25em] text-white/40 font-mono block font-bold mb-1">
+        <div className="bg-white border border-slate-200 p-5 space-y-4 shadow-xs">
+          <div className="border-b border-slate-200 pb-3">
+            <span className="text-[10px] uppercase tracking-[0.25em] text-slate-500 font-mono block font-bold mb-1">
               PUBLIC HONEYPOT TELEMETRY INSPECTOR
             </span>
-            <h2 className="text-xl font-serif italic text-white flex items-center gap-2">
-              <Terminal className="w-4 h-4 text-purple-400" />
+            <h2 className="text-lg font-serif italic text-slate-900 flex items-center gap-2">
+              <Terminal className="w-4 h-4 text-purple-600" />
               Payload Breakdown
             </h2>
           </div>
 
           {selectedLog ? (
             <div className="space-y-4 text-xs font-mono">
-              <div className="p-3 border border-white/10 bg-black/60 space-y-2 text-[11px]">
+              <div className="p-3 border border-slate-200 bg-slate-50 space-y-2 text-[11px]">
                 <div className="flex items-center justify-between">
-                  <span className="text-white/40 uppercase">Event ID:</span>
-                  <span className="text-purple-300 font-bold">{selectedLog.id}</span>
+                  <span className="text-slate-500 uppercase">Event ID:</span>
+                  <span className="text-purple-700 font-bold">{selectedLog.id}</span>
                 </div>
                 {selectedLog.publicObservatorySource && (
                   <div className="flex items-center justify-between">
-                    <span className="text-white/40 uppercase">Observatory Node:</span>
-                    <span className="text-pink-400 font-bold truncate max-w-[180px]">{selectedLog.publicObservatorySource}</span>
+                    <span className="text-slate-500 uppercase">Observatory Node:</span>
+                    <span className="text-pink-600 font-bold truncate max-w-[180px]">{selectedLog.publicObservatorySource}</span>
                   </div>
                 )}
                 <div className="flex items-center justify-between">
-                  <span className="text-white/40 uppercase">Timestamp:</span>
-                  <span className="text-white">{selectedLog.timestamp}</span>
+                  <span className="text-slate-500 uppercase">Timestamp:</span>
+                  <span className="text-slate-900">{selectedLog.timestamp}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-white/40 uppercase">Honeypot IP:</span>
-                  <span className="text-white">{selectedLog.sourceIp}</span>
+                  <span className="text-slate-500 uppercase">Honeypot IP:</span>
+                  <span className="text-slate-900">{selectedLog.sourceIp}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-white/40 uppercase">Target Architecture:</span>
-                  <span className="text-indigo-300">{selectedLog.targetModel}</span>
+                  <span className="text-slate-500 uppercase">Target Architecture:</span>
+                  <span className="text-indigo-700 font-semibold">{selectedLog.targetModel}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-white/40 uppercase">Guard Trigger:</span>
-                  <span className="text-amber-300">{selectedLog.guardrailTriggered}</span>
+                  <span className="text-slate-500 uppercase">Guard Trigger:</span>
+                  <span className="text-amber-700 font-semibold">{selectedLog.guardrailTriggered}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-white/40 uppercase">Confidence Score:</span>
-                  <span className="text-emerald-400 font-bold">{(selectedLog.confidenceScore * 100).toFixed(0)}%</span>
+                  <span className="text-slate-500 uppercase">Confidence Score:</span>
+                  <span className="text-emerald-700 font-bold">{(selectedLog.confidenceScore * 100).toFixed(0)}%</span>
                 </div>
               </div>
 
               <div className="space-y-1">
-                <span className="text-white/40 block text-[10px] uppercase tracking-widest font-bold">Raw Payload Intercepted in Public Sensor:</span>
-                <div className="p-3 border border-red-500/30 bg-red-950/20 text-red-300 text-[11px] leading-relaxed break-all font-mono">
+                <span className="text-slate-500 block text-[10px] uppercase tracking-widest font-bold">Raw Payload Intercepted in Public Sensor:</span>
+                <div className="p-3 border border-red-200 bg-red-50 text-red-900 text-[11px] leading-relaxed break-all font-mono font-medium">
                   {selectedLog.promptSnippet}
                 </div>
               </div>
 
-              <div className="p-3 border border-emerald-500/30 bg-emerald-950/20 text-emerald-300 space-y-1">
-                <span className="font-bold text-emerald-400 block text-[10px] uppercase tracking-widest">Runtime Mitigation Standard:</span>
-                <p className="text-[11px] leading-relaxed text-white/80">
+              <div className="p-3 border border-emerald-200 bg-emerald-50 text-emerald-900 space-y-1">
+                <span className="font-bold text-emerald-700 block text-[10px] uppercase tracking-widest">Runtime Mitigation Standard:</span>
+                <p className="text-[11px] leading-relaxed text-slate-700">
                   Intercepted and logged at public edge gateway layer. Added to public threat intelligence feed for model fine-tuning and safety alignment.
                 </p>
               </div>
             </div>
           ) : (
-            <p className="text-xs text-white/40 italic font-mono">Select an event from the stream feed to view telemetry breakdown.</p>
+            <p className="text-xs text-slate-500 italic font-mono">Select an event from the stream feed to view telemetry breakdown.</p>
           )}
         </div>
       </div>
