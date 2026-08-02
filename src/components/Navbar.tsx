@@ -124,22 +124,31 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Navigation Tabs Bar */}
-        <nav className="flex overflow-x-auto scrollbar-none">
+        <nav className="flex flex-wrap lg:flex-nowrap overflow-x-auto scrollbar-none border-t border-slate-100">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
+            const isScanner = tab.id === 'scanner';
+
             return (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex-1 min-w-max py-3 px-4 text-[10px] sm:text-[11px] uppercase tracking-[0.18em] font-semibold border-r border-slate-200 flex items-center justify-center space-x-2 transition ${
+                className={`flex-1 min-w-max py-3 px-2.5 sm:px-3 text-[10px] xl:text-[11px] uppercase tracking-[0.12em] font-semibold border-r border-slate-200 flex items-center justify-center space-x-1.5 transition ${
                   isActive
                     ? 'bg-slate-900 text-white font-bold'
+                    : isScanner
+                    ? 'bg-indigo-50/80 text-indigo-900 hover:bg-indigo-100 font-bold border-b-2 border-b-indigo-600'
                     : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : isScanner ? 'text-indigo-600' : 'text-slate-400'}`} />
                 <span>{tab.label}</span>
+                {isScanner && !isActive && (
+                  <span className="ml-1 text-[8px] bg-indigo-600 text-white px-1.5 py-0.2 rounded-none font-mono uppercase tracking-normal">
+                    Tool
+                  </span>
+                )}
               </button>
             );
           })}
