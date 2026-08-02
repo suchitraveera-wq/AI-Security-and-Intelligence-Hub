@@ -33,6 +33,213 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Helper function to fetch live public security feeds from CISA, GitHub, NIST, and Google Search Grounded AI Intel
+async function fetchPublicSecurityFeeds(queryFilter?: string) {
+  const items: any[] = [];
+  const errors: string[] = [];
+
+  // 1. Fetch CISA Known Exploited Vulnerabilities (KEV) Catalog
+  try {
+    const cisaRes = await fetch('https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json', {
+      headers: { 'User-Agent': 'SentinelAI-Security-Radar/1.0' },
+      signal: AbortSignal.timeout(6000)
+    });
+    if (cisaRes.ok) {
+      const cisaData = await cisaRes.json();
+      const cisaVulns = cisaData.vulnerabilities || [];
+      // Take top 10 most recently added CISA vulnerabilities
+      const recentCisa = cisaVulns.slice(-10).reverse();
+      for (const item of recentCisa) {
+        items.push({
+          id: `CISA-${item.cveID}`,
+          title: `CISA KEV: ${item.vulnerabilityName} (${item.vendorProject} ${item.product})`,
+          summary: `${item.shortDescription} Required Action: ${item.requiredAction}`,
+          fullContent: `Official CISA Known Exploited Vulnerabilities Catalog entry for ${item.cveID}. Vendor: ${item.vendorProject}, Product: ${item.product}. Action required by ${item.dueDate || 'Immediate'}: ${item.requiredAction}. Notes: ${item.notes || 'None'}`,
+          category: 'vulnerabilities',
+          severity: 'Critical',
+          date: item.dateAdded ? new Date(item.dateAdded).toISOString() : new Date().toISOString(),
+          source: 'CISA Known Exploited Vulnerabilities Catalog (Public Feed)',
+          sourceCategory: 'security_firms',
+          sourceUrl: `https://nvd.nist.gov/vuln/detail/${item.cveID}`,
+          affectedFrameworks: [item.vendorProject, item.product].filter(Boolean),
+          cveId: item.cveID,
+          impactScore: 9.5,
+          status: 'Active',
+          remediationAction: item.requiredAction || 'Apply official vendor patch immediately.',
+          tags: ['CISA KEV', 'Exploited Zero-Day', 'Public Security Feed', item.vendorProject]
+        });
+      }
+    }
+  } catch (err: any) {
+    console.warn('CISA feed fetch error:', err.message);
+    errors.push(`CISA Feed: ${err.message}`);
+  }
+
+  // 2. Fetch GitHub Security Advisories Public API
+  try {
+    const ghRes = await fetch('https://api.github.com/advisories?per_page=12', {
+      headers: { 
+        'User-Agent': 'SentinelAI-Security-Radar/1.0',
+        'Accept': 'application/vnd.github+json'
+      },
+      signal: AbortSignal.timeout(6000)
+    });
+    if (ghRes.ok) {
+      const ghAdvisories = await ghRes.json();
+      for (const adv of ghAdvisories) {
+        const severityMap: Record<string, 'Critical' | 'High' | 'Medium' | 'Low'> = {
+          critical: 'Critical',
+          high: 'High',
+          moderate: 'Medium',
+          low: 'Low'
+        };
+        const mappedSev = severityMap[adv.severity?.toLowerCase()] || 'High';
+        const cve = adv.cve_id || adv.ghsa_id;
+        const affectedPkgs = (adv.vulnerabilities || [])
+          .map((v: any) => v.package?.name)
+          .filter(Boolean);
+
+        items.push({
+          id: `GHSA-${adv.ghsa_id}`,
+          title: `GitHub Security Advisory: ${adv.summary || adv.ghsa_id}`,
+          summary: adv.description ? (adv.description.slice(0, 280) + '...') : 'Public security advisory published on GitHub Advisory Database.',
+          fullContent: adv.description || 'Detailed security advisory published on GitHub Security Advisory DB.',
+          category: 'vulnerabilities',
+          severity: mappedSev,
+          date: adv.published_at || new Date().toISOString(),
+          source: 'GitHub Security Advisory Database (Public API)',
+          sourceCategory: 'security_firms',
+          sourceUrl: adv.html_url || `https://github.com/advisories/${adv.ghsa_id}`,
+          affectedFrameworks: affectedPkgs.length > 0 ? affectedPkgs : ['Open Source Ecosystem'],
+          cveId: cve,
+          impactScore: mappedSev === 'Critical' ? 9.2 : mappedSev === 'High' ? 8.4 : 6.8,
+          status: 'Active',
+          remediationAction: 'Upgrade affected dependency packages to patched versions specified in GHSA bulletin.',
+          tags: ['GitHub Advisory', 'CVE', 'Open Source Security', adv.ghsa_id]
+        });
+      }
+    }
+  } catch (err: any) {
+    console.warn('GitHub Advisories fetch error:', err.message);
+    errors.push(`GitHub Advisories: ${err.message}`);
+  }
+
+  // 3. Fetch NIST NVD REST API v2.0
+  try {
+    const nvdRes = await fetch('https://services.nvd.nist.gov/rest/json/cves/2.0?resultsPerPage=8', {
+      headers: { 'User-Agent': 'SentinelAI-Security-Radar/1.0' },
+      signal: AbortSignal.timeout(6000)
+    });
+    if (nvdRes.ok) {
+      const nvdData = await nvdRes.json();
+      const cveList = nvdData.vulnerabilities || [];
+      for (const item of cveList) {
+        const cveObj = item.cve || {};
+        const cveId = cveObj.id;
+        const descObj = (cveObj.descriptions || []).find((d: any) => d.lang === 'en') || cveObj.descriptions?.[0];
+        const description = descObj?.value || 'NIST NVD CVE Entry';
+        
+        // Extract CVSS score if present
+        let cvssScore = 8.0;
+        const metrics = cveObj.metrics || {};
+        if (metrics.cvssMetricV31?.[0]?.cvssData?.baseScore) {
+          cvssScore = metrics.cvssMetricV31[0].cvssData.baseScore;
+        } else if (metrics.cvssMetricV2?.[0]?.cvssData?.baseScore) {
+          cvssScore = metrics.cvssMetricV2[0].cvssData.baseScore;
+        }
+
+        const sev = cvssScore >= 9.0 ? 'Critical' : cvssScore >= 7.0 ? 'High' : 'Medium';
+
+        items.push({
+          id: `NVD-${cveId}`,
+          title: `NIST NVD Disclosure: ${cveId}`,
+          summary: description.length > 280 ? description.slice(0, 280) + '...' : description,
+          fullContent: `Official NIST National Vulnerability Database (NVD) record for ${cveId}. Description: ${description}`,
+          category: 'vulnerabilities',
+          severity: sev,
+          date: cveObj.published || new Date().toISOString(),
+          source: 'NIST National Vulnerability Database (Public REST API)',
+          sourceCategory: 'domain_experts',
+          sourceUrl: `https://nvd.nist.gov/vuln/detail/${cveId}`,
+          affectedFrameworks: ['NIST NVD Public Feed'],
+          cveId: cveId,
+          impactScore: cvssScore,
+          status: 'Active',
+          remediationAction: 'Inspect affected system vendors and apply latest security security patches.',
+          tags: ['NIST NVD', 'CVE REST API', 'Public Feed']
+        });
+      }
+    }
+  } catch (err: any) {
+    console.warn('NVD fetch error:', err.message);
+    errors.push(`NVD API: ${err.message}`);
+  }
+
+  // Filter items if queryFilter provided
+  let filteredItems = items;
+  if (queryFilter && queryFilter.trim()) {
+    const q = queryFilter.toLowerCase();
+    filteredItems = items.filter(i => 
+      i.title.toLowerCase().includes(q) || 
+      i.summary.toLowerCase().includes(q) ||
+      i.tags.some((t: string) => t.toLowerCase().includes(q))
+    );
+  }
+
+  // Sort by date descending
+  filteredItems.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  return {
+    success: true,
+    timestamp: new Date().toISOString(),
+    totalFetched: items.length,
+    returnedCount: filteredItems.length,
+    sourcesChecked: ['CISA KEV Catalog', 'GitHub Security Advisories API', 'NIST NVD REST API v2.0'],
+    errors: errors.length > 0 ? errors : undefined,
+    items: filteredItems
+  };
+}
+
+// Endpoint: JSON Live Public Security Feed
+app.get('/api/live-security-feed', async (req, res) => {
+  try {
+    const query = req.query.q as string | undefined;
+    const feedResult = await fetchPublicSecurityFeeds(query);
+    res.json(feedResult);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message || 'Failed to fetch public live security feed' });
+  }
+});
+
+// Endpoint: SSE Real-Time Streaming Live Security Feed
+app.get('/api/live-security-feed/stream', async (req, res) => {
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.flushHeaders();
+
+  res.write(`data: ${JSON.stringify({ type: 'status', message: 'Connecting to public security data streams (CISA KEV, GitHub Advisories, NIST NVD)...' })}\n\n`);
+
+  try {
+    const query = req.query.q as string | undefined;
+    const feed = await fetchPublicSecurityFeeds(query);
+
+    // Stream items one by one with simulated real-time arrival pacing
+    for (let i = 0; i < feed.items.length; i++) {
+      const item = feed.items[i];
+      res.write(`data: ${JSON.stringify({ type: 'item', index: i + 1, total: feed.items.length, item })}\n\n`);
+      // Brief pause between streamed items
+      await new Promise(r => setTimeout(r, 150));
+    }
+
+    res.write(`data: ${JSON.stringify({ type: 'complete', totalFetched: feed.totalFetched, sourcesChecked: feed.sourcesChecked })}\n\n`);
+  } catch (err: any) {
+    res.write(`data: ${JSON.stringify({ type: 'error', error: err.message })}\n\n`);
+  } finally {
+    res.end();
+  }
+});
+
 // Endpoint 1: Live AI Threat Intelligence Briefing & Grounded News Digest
 app.post('/api/ai-intel/news-digest', async (req, res) => {
   try {
